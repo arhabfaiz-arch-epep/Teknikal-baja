@@ -1,0 +1,135 @@
+{
+  "types": [
+    {
+      "id": "carbon-steel",
+      "name": "Baja Karbon (Carbon Steel)",
+      "category": "Karbon",
+      "description": "Baja yang mengandung karbon sebagai unsur paduan utama",
+      "applications": ["Konstruksi", "Pipa", "Komponen Mesin"],
+      "standards": ["ASTM A36", "JIS SS400"],
+      "properties": {
+        "tensileStrength": "400-700 MPa",
+        "yieldStrength": "250-400 MPa",
+        "hardness": "120-200 HB",
+        "density": "7.85 g/cm³"
+      },
+      "grades": [
+        {
+          "name": "ASTM A36",
+          "composition": {
+            "carbon": "0.25-0.29%",
+            "manganese": "0.80-1.20%",
+            "phosphorus": "≤0.04%",
+            "sulfur": "≤0.05%"
+          }
+        },
+        {
+          "name": "JIS SS400",
+          "composition": {
+            "carbon": "≤0.25%",
+            "manganese": "≤1.35%",
+            "phosphorus": "≤0.04%",
+            "sulfur": "≤0.05%"
+          }
+        }
+      ]
+    },
+    {
+      "id": "alloy-steel",
+      "name": "Baja Paduan (Alloy Steel)",
+      "category": "Paduan",
+      "description": "Baja dengan unsur paduan tambahan untuk kekuatan tinggi",
+      "applications": ["Aplikasi Khusus", "Tekanan Tinggi", "Suhu Tinggi"],
+      "standards": ["ASTM A514", "API 5L"],
+      "properties": {
+        "tensileStrength": "800-1200 MPa",
+        "yieldStrength": "690-1000 MPa",
+        "hardness": "200-300 HB",
+        "density": "7.85 g/cm³"
+      },
+      "grades": [
+        {
+          "name": "ASTM A514",
+          "composition": {
+            "carbon": "0.12-0.21%",
+            "manganese": "0.70-1.00%",
+            "phosphorus": "≤0.035%",
+            "sulfur": "≤0.04%",
+            "silicon": "0.20-0.35%"
+          }
+        }
+      ]
+    },
+    {
+      "id": "stainless-steel",
+      "name": "Baja Tahan Karat (Stainless Steel)",
+      "category": "Tahan Karat",
+      "description": "Baja dengan kromium tinggi untuk ketahanan korosi",
+      "applications": ["Industri Makanan", "Kimia", "Kapal"],
+      "standards": ["AISI 304", "AISI 316"],
+      "properties": {
+        "tensileStrength": "500-900 MPa",
+        "yieldStrength": "200-400 MPa",
+        "hardness": "150-200 HB",
+        "density": "8.00 g/cm³"
+      },
+      "grades": [
+        {
+          "name": "AISI 304",
+          "composition": {
+            "carbon": "≤0.08%",
+            "chromium": "18-20%",
+            "nickel": "8-10.5%",
+            "manganese": "≤2.00%"
+          }
+        },
+        {
+          "name": "AISI 316",
+          "composition": {
+            "carbon": "≤0.08%",
+            "chromium": "16-18%",
+            "nickel": "10-14%",
+            "molybdenum": "2-3%"
+          }
+        }
+      ]
+    }
+  ],
+  "standards": {
+    "ASTM": [
+      {"code": "A36", "name": "Baja karbon konstruksi", "category": "Karbon"},
+      {"code": "A514", "name": "Baja paduan berkekuatan tinggi", "category": "Paduan"},
+      {"code": "A992", "name": "Baja struktural", "category": "Struktural"}
+    ],
+    "JIS": [
+      {"code": "SS400", "name": "Baja karbon konstruksi", "category": "Karbon"},
+      {"code": "SS490", "name": "Baja konstruksi berkekuatan tinggi", "category": "Karbon"},
+      {"code": "SNCM", "name": "Baja paduan", "category": "Paduan"}
+    ],
+    "EN": [
+      {"code": "S235", "name": "Baja struktural umum", "category": "Struktural"},
+      {"code": "S275", "name": "Baja struktural sedang", "category": "Struktural"},
+      {"code": "S355", "name": "Baja struktural berkekuatan tinggi", "category": "Struktural"}
+    ]
+  },
+  "knowledge": [
+    {
+      "id": "mechanical-properties",
+      "title": "Sifat Mekanis Baja",
+      "content": "Memahami sifat mekanis seperti kekuatan tarik, kekuatan luluh, kekerasan, kelenturan, dan ketangguhan adalah kunci untuk memilih baja yang tepat.",
+      "category": "properties"
+    },
+    {
+      "id": "chemical-composition",
+      "title": "Komposisi Kimia",
+      "content": "Unsur seperti karbon, mangan, silikon, krom, dan nikel menentukan kualitas dan kekuatan baja. Perbedaan kadar inilah yang membuat setiap grade baja berbeda.",
+      "category": "composition"
+    },
+    {
+      "id": "processing-methods",
+      "title": "Proses Pengolahan",
+      "content": "Welding, hot rolled, cold rolled, heat treatment, dan cutting adalah proses-proses yang mempengaruhi sifat akhir baja dan aplikasinya.",
+      "category": "processing"
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+[
+  {
+    "id": "steel-001",
+    "type": "Baja Karbon (Carbon Steel)",
+    "icon": "🔴",
+    "usage": "Konstruksi, pipa, komponen mesin",
+    "characteristics": "Ekonomis, mudah dibentuk, kuat",
+    "gradeExamples": ["ASTM A36", "JIS SS400"],
+    "tensileStrength": "400-700 MPa",
+    "price": "Ekonomis",
+    "resistance": "Sedang",
+    "details": {
+      "composition": "Fe + 0.05-2% C",
+      "density": "7850 kg/m³",
+      "meltingPoint": "1538°C",
+      "youngModulus": "200 GPa"
+    }
+  },
+  {
+    "id": "steel-002",
+    "type": "Baja Paduan (Alloy Steel)",
+    "icon": "🟠",
+    "usage": "Aplikasi khusus dengan persyaratan tinggi",
+    "characteristics": "Kekuatan lebih tinggi, tahan panas",
+    "gradeExamples": ["ASTM A514", "API 5L"],
+    "tensileStrength": "800-1200 MPa",
+    "price": "Premium",
+    "resistance": "Tinggi",
+    "details": {
+      "composition": "Fe + Mo, Cr, V, Ni",
+      "density": "7850 kg/m³",
+      "meltingPoint": "1500-1600°C",
+      "youngModulus": "210 GPa"
+    }
+  },
+  {
+    "id": "steel-003",
+    "type": "Baja Tahan Karat (Stainless Steel)",
+    "icon": "✨",
+    "usage": "Industri makanan, kimia, kapal",
+    "characteristics": "Tahan korosi, estetis, higienis",
+    "gradeExamples": ["AISI 304", "AISI 316"],
+    "tensileStrength": "500-900 MPa",
+    "price": "Mahal",
+    "resistance": "Sangat Tinggi",
+    "details": {
+      "composition": "Fe + Cr (18-28%) + Ni (8-16%)",
+      "density": "8000 kg/m³",
+      "meltingPoint": "1400-1450°C",
+      "youngModulus": "190 GPa"
+    }
+  },
+  {
+    "id": "steel-004",
+    "type": "Baja Struktural (Structural Steel)",
+    "icon": "🏗️",
+    "usage": "Rangka bangunan, jembatan, tower",
+    "characteristics": "Kuat, liat, mudah dilas",
+    "gradeExamples": ["EN S235", "EN S355"],
+    "tensileStrength": "400-550 MPa",
+    "price": "Sedang",
+    "resistance": "Baik",
+    "details": {
+      "composition": "Fe + 0.1-0.3% C",
+      "density": "7850 kg/m³",
+      "meltingPoint": "1530°C",
+      "youngModulus": "205 GPa"
+    }
+  }
+]

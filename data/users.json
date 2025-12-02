@@ -1,0 +1,46 @@
+[
+  {
+    "id": "user-001",
+    "username": "admin",
+    "password": "admin123",
+    "email": "admin@teknikalbaja.com",
+    "name": "Administrator",
+    "level": "Intermediate",
+    "points": 2450,
+    "joinDate": "2024-01-15",
+    "achievements": [
+      "🎓",
+      "⭐",
+      "🔬",
+      "💯"
+    ]
+  },
+  {
+    "id": "user-002",
+    "username": "engineer",
+    "password": "engineer123",
+    "email": "engineer@example.com",
+    "name": "Enginer Professional",
+    "level": "Advanced",
+    "points": 5200,
+    "joinDate": "2023-06-20",
+    "achievements": [
+      "🎓",
+      "⭐",
+      "🔬",
+      "💯",
+      "🏆"
+    ]
+  },
+  {
+    "id": "user-2eec65db",
+    "username": "faiz",
+    "email": "Muhammadarhabfaizazzam@gmail.com",
+    "password": "faiz123",
+    "name": "Muhammadarhabfaizazzam",
+    "level": "Beginner",
+    "points": 0,
+    "joinDate": "2025-12-02",
+    "achievements": []
+  }
+]

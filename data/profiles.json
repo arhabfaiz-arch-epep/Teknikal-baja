@@ -1,0 +1,140 @@
+{
+  "profiles": [
+    {
+      "id": "user-1",
+      "username": "teknikal_user",
+      "email": "user@example.com",
+      "fullName": "User Teknikal Baja",
+      "joinDate": "2024-01-15",
+      "level": "Intermediate",
+      "points": 2450,
+      "achievements": [
+        {
+          "id": "course-basic",
+          "name": "Kursus Dasar Selesai",
+          "description": "Menyelesaikan kursus dasar teknikal baja",
+          "icon": "🎓",
+          "earnedDate": "2024-02-01"
+        },
+        {
+          "id": "articles-read",
+          "name": "10+ Artikel Dibaca",
+          "description": "Telah membaca lebih dari 10 artikel teknis",
+          "icon": "⭐",
+          "earnedDate": "2024-03-15"
+        },
+        {
+          "id": "astm-expert",
+          "name": "Ahli Standar ASTM",
+          "description": "Menguasai standar ASTM untuk baja",
+          "icon": "🔬",
+          "earnedDate": "2024-04-20"
+        },
+        {
+          "id": "quiz-perfect",
+          "name": "Quiz 100% Benar",
+          "description": "Mendapatkan skor sempurna dalam kuis teknis",
+          "icon": "💯",
+          "earnedDate": "2024-05-10"
+        }
+      ],
+      "stats": {
+        "articlesRead": 45,
+        "calculationsDone": 120,
+        "coursesCompleted": 3,
+        "quizScore": 95
+      },
+      "preferences": {
+        "theme": "light",
+        "language": "id",
+        "notifications": true
+      }
+    }
+  ],
+  "achievements": [
+    {
+      "id": "first-login",
+      "name": "Selamat Datang",
+      "description": "Login pertama kali ke platform",
+      "icon": "👋",
+      "points": 10,
+      "rarity": "common"
+    },
+    {
+      "id": "course-basic",
+      "name": "Kursus Dasar Selesai",
+      "description": "Menyelesaikan kursus dasar teknikal baja",
+      "icon": "🎓",
+      "points": 100,
+      "rarity": "uncommon"
+    },
+    {
+      "id": "articles-read",
+      "name": "Pembaca Rajin",
+      "description": "Membaca artikel teknis",
+      "icon": "📖",
+      "points": 25,
+      "rarity": "common",
+      "tiers": [
+        {"threshold": 5, "name": "Pembaca Awal"},
+        {"threshold": 10, "name": "Pembaca Rajin"},
+        {"threshold": 25, "name": "Pembaca Ahli"},
+        {"threshold": 50, "name": "Master Reader"}
+      ]
+    },
+    {
+      "id": "calculator-pro",
+      "name": "Ahli Kalkulator",
+      "description": "Melakukan perhitungan teknis",
+      "icon": "🧮",
+      "points": 15,
+      "rarity": "common",
+      "tiers": [
+        {"threshold": 10, "name": "Pemula"},
+        {"threshold": 50, "name": "Mahir"},
+        {"threshold": 100, "name": "Ahli"},
+        {"threshold": 250, "name": "Master"}
+      ]
+    },
+    {
+      "id": "astm-expert",
+      "name": "Ahli Standar ASTM",
+      "description": "Menguasai standar ASTM untuk baja",
+      "icon": "🔬",
+      "points": 200,
+      "rarity": "rare"
+    },
+    {
+      "id": "jis-expert",
+      "name": "Ahli Standar JIS",
+      "description": "Menguasai standar JIS untuk baja",
+      "icon": "🇯🇵",
+      "points": 200,
+      "rarity": "rare"
+    },
+    {
+      "id": "en-expert",
+      "name": "Ahli Standar EN",
+      "description": "Menguasai standar EN untuk baja",
+      "icon": "🇪🇺",
+      "points": 200,
+      "rarity": "rare"
+    },
+    {
+      "id": "quiz-perfect",
+      "name": "Skor Sempurna",
+      "description": "Mendapatkan skor sempurna dalam kuis",
+      "icon": "💯",
+      "points": 150,
+      "rarity": "epic"
+    },
+    {
+      "id": "steel-master",
+      "name": "Master Baja",
+      "description": "Menguasai semua aspek teknikal baja",
+      "icon": "🏆",
+      "points": 500,
+      "rarity": "legendary"
+    }
+  ]
+}

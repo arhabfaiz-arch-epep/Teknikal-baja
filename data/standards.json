@@ -1,0 +1,98 @@
+[
+  {
+    "id": "std-001",
+    "region": "🇺🇸 ASTM (Amerika)",
+    "standards": [
+      {
+        "code": "ASTM A36",
+        "description": "Baja karbon konstruksi",
+        "tensileStrength": "400 MPa",
+        "yieldStrength": "250 MPa"
+      },
+      {
+        "code": "ASTM A514",
+        "description": "Baja paduan berkekuatan tinggi",
+        "tensileStrength": "1035 MPa",
+        "yieldStrength": "860 MPa"
+      },
+      {
+        "code": "ASTM A992",
+        "description": "Baja struktural",
+        "tensileStrength": "450 MPa",
+        "yieldStrength": "345 MPa"
+      }
+    ]
+  },
+  {
+    "id": "std-002",
+    "region": "🇯🇵 JIS (Jepang)",
+    "standards": [
+      {
+        "code": "JIS G3101 SS400",
+        "description": "Baja karbon konstruksi",
+        "tensileStrength": "400 MPa",
+        "yieldStrength": "245 MPa"
+      },
+      {
+        "code": "JIS G3101 SS490",
+        "description": "Baja konstruksi berkekuatan tinggi",
+        "tensileStrength": "490 MPa",
+        "yieldStrength": "345 MPa"
+      },
+      {
+        "code": "JIS G4101 SNCM",
+        "description": "Baja paduan",
+        "tensileStrength": "800-1000 MPa",
+        "yieldStrength": "600-800 MPa"
+      }
+    ]
+  },
+  {
+    "id": "std-003",
+    "region": "🇪🇺 EN (Eropa)",
+    "standards": [
+      {
+        "code": "EN S235",
+        "description": "Baja struktural umum",
+        "tensileStrength": "360 MPa",
+        "yieldStrength": "235 MPa"
+      },
+      {
+        "code": "EN S275",
+        "description": "Baja struktural sedang",
+        "tensileStrength": "430 MPa",
+        "yieldStrength": "275 MPa"
+      },
+      {
+        "code": "EN S355",
+        "description": "Baja struktural berkekuatan tinggi",
+        "tensileStrength": "510 MPa",
+        "yieldStrength": "355 MPa"
+      }
+    ]
+  },
+  {
+    "id": "std-004",
+    "region": "🥄 AISI (Stainless)",
+    "standards": [
+      {
+        "code": "AISI 304",
+        "description": "Stainless steel austenite",
+        "tensileStrength": "515 MPa",
+        "yieldStrength": "205 MPa"
+      },
+      {
+        "code": "AISI 316",
+        "description": "Stainless steel tahan korosi tinggi",
+        "tensileStrength": "515 MPa",
+        "yieldStrength": "170 MPa"
+      },
+      {
+        "code": "AISI 430",
+        "description": "Stainless steel ferrite",
+        "tensileStrength": "450 MPa",
+        "yieldStrength": "275 MPa"
+      }
+    ]
+  }
+]
