@@ -163,8 +163,8 @@
         </section>
 
         <!-- Hero Section -->
-        <section class="hero" id="home" style="display: none;">
-            <div class="hero-content">
+        <section class="home" id="home" style="display: none;">
+            <div class="home-content">
                 <h1>Teknikal Baja</h1>
                 <p>Solusi terbaik untuk kebutuhan teknis Anda</p>
                 <a href="#services" class="hero-btn">Lihat Layanan</a>
@@ -567,35 +567,33 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Masuk ke Teknikal Baja</h2>
-                <span class="close-modal">&times;</span>
+                <button class="close-modal">&times;</button>
             </div>
-            <div class="modal-body">
-                <form id="login-form">
-                    <div class="form-group">
-                        <label for="username">Username atau Email</label>
-                        <input type="text" id="username" name="username" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" name="password" required>
-                    </div>
-                    <div class="form-options">
-                        <label class="checkbox-label">
-                            <input type="checkbox" name="remember">
-                            <span>Ingat saya</span>
-                        </label>
-                        <a href="#" class="forgot-password">Lupa password?</a>
-                    </div>
-                    <button type="submit" class="login-btn">Masuk</button>
-                </form>
-                <div class="modal-footer">
-                    <p>Belum punya akun? <a href="#" class="register-link">Daftar sekarang</a></p>
+            <form id="login-form" class="login-form">
+                <div class="form-group">
+                    <label for="username">Username atau Email</label>
+                    <input type="text" id="username" name="username" required>
                 </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="remember">
+                        <span>Ingat saya</span>
+                    </label>
+                    <a href="#" class="forgot-password">Lupa password?</a>
+                </div>
+                <button type="submit" class="login-btn">Masuk</button>
+            </form>
+            <div class="modal-footer">
+                <p>Belum punya akun? <a href="#" class="register-link">Daftar sekarang</a></p>
             </div>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    <script src="baja.js"></script>
+    <script src="./baja.js"></script>
 </body>
 </html>

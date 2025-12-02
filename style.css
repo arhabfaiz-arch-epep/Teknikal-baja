@@ -74,6 +74,9 @@ body {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
 }
+
+.btn-icon {
+    margin-right: 0.5rem;
 }
 
 /* ============ WELCOME SECTION ============ */
@@ -468,6 +471,8 @@ body {
     display: none;
     margin-left: 280px;
     margin-top: 70px;
+    flex-direction: column;
+    min-height: calc(100vh - 70px);
 }
 
 .top-navbar {
@@ -509,6 +514,7 @@ body {
 .profil {
     display: none;
     padding: 2rem;
+    flex: 1;
 }
 
 .section-container {
