@@ -9,7 +9,7 @@ const usersFile = path.join(__dirname, '../data/users.json');
 // In-memory storage for users (session-based)
 let usersInMemory = null;
 
-// Default users
+// Default users (fallback if no file exists)
 const DEFAULT_USERS = [
     {
         id: 'user-admin001',
@@ -39,17 +39,20 @@ const DEFAULT_USERS = [
     }
 ];
 
-// Helper function to read users from file (fallback)
+// Helper function to read users from file
 function getUsersFromFile() {
     try {
         const data = fs.readFileSync(usersFile, 'utf8');
-        return JSON.parse(data);
+        const fileUsers = JSON.parse(data);
+        console.log('✅ Loaded', fileUsers.length, 'users from file');
+        return fileUsers;
     } catch (err) {
+        console.log('⚠️ No file found, using DEFAULT_USERS');
         return DEFAULT_USERS;
     }
 }
 
-// Helper function to get users (memory first, then file)
+// Helper function to get users (always from file first to get latest data)
 function getUsers() {
     if (!usersInMemory) {
         usersInMemory = getUsersFromFile();
@@ -57,15 +60,15 @@ function getUsers() {
     return usersInMemory;
 }
 
-// Helper function to save users (try file, but keep in memory always)
+// Helper function to save users (always write to file, keep in memory)
 function saveUsers(users) {
     usersInMemory = users;
     
-    // Try to save to file (will fail on Vercel, but that's OK)
     try {
         fs.writeFileSync(usersFile, JSON.stringify(users, null, 2));
+        console.log('✅ Users saved to file');
     } catch (err) {
-        console.log('File write not available (expected on Vercel), using in-memory storage');
+        console.log('⚠️ Could not write to file (Vercel read-only), data in memory only');
     }
 }
 
@@ -81,15 +84,19 @@ router.post('/login', (req, res) => {
     }
 
     const users = getUsers();
+    console.log(`🔍 Login attempt: username="${username}", total users in memory: ${users.length}`);
+    
     const user = users.find(u => u.username === username && u.password === password);
 
     if (!user) {
+        console.log(`❌ Login failed for "${username}" - credentials not found`);
         return res.status(401).json({
             success: false,
             message: 'Username atau password salah'
         });
     }
 
+    console.log(`✅ Login successful for "${username}" (${user.id})`);
     // Return user data without password
     const { password: _, ...userWithoutPassword } = user;
     res.json({
@@ -104,7 +111,10 @@ router.post('/login', (req, res) => {
 router.post('/register', (req, res) => {
     const { username, email, password, name } = req.body;
 
+    console.log(`📝 Register attempt: username="${username}", email="${email}"`);
+
     if (!username || !email || !password || !name) {
+        console.log('❌ Register failed: missing fields');
         return res.status(400).json({
             success: false,
             message: 'Semua field harus diisi'
@@ -112,8 +122,10 @@ router.post('/register', (req, res) => {
     }
 
     const users = getUsers();
+    console.log(`Current users in memory: ${users.length}`);
     
     if (users.find(u => u.username === username)) {
+        console.log(`❌ Username "${username}" already exists`);
         return res.status(409).json({
             success: false,
             message: 'Username sudah terdaftar'
@@ -121,6 +133,7 @@ router.post('/register', (req, res) => {
     }
 
     if (users.find(u => u.email === email)) {
+        console.log(`❌ Email "${email}" already exists`);
         return res.status(409).json({
             success: false,
             message: 'Email sudah terdaftar'
@@ -141,6 +154,8 @@ router.post('/register', (req, res) => {
 
     users.push(newUser);
     saveUsers(users);
+
+    console.log(`✅ Register successful for "${username}" (${newUser.id})`);
 
     const { password: _, ...userWithoutPassword } = newUser;
     res.status(201).json({
