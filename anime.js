@@ -1,9 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // ===== API Configuration =====
-    // Auto-detect API base URL (localhost for dev, same domain for production)
-    const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-        ? 'http://localhost:5000/api'
-        : `${window.location.origin}/api`;
+    // API base URL for local development
+    const API_BASE = 'http://localhost:5000/api';
     
     console.log('🔧 API BASE:', API_BASE);
     console.log('🌍 Window location:', window.location.origin);
@@ -233,7 +231,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             initDashboardAnimations();
                         }
 
-                        // Update navbar buttons
+                        
                         if (loginNavBtn) loginNavBtn.style.display = 'none';
                         if (logoutNavBtn) logoutNavBtn.style.display = 'block';
 
@@ -295,12 +293,14 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.textContent = 'Loading...';
 
             // Call API register
-            const result = await apiCall('/auth/register', 'POST', { 
-                username, 
-                email, 
-                password, 
+            const result = await apiCall('/auth/register', 'POST', {
+                username,
+                email,
+                password,
                 name: fullname
             });
+
+            console.log('Registration API Response:', result);
 
             if (result && result.success) {
                 console.log('✅ Registration SUCCESS:', {
@@ -310,26 +310,40 @@ document.addEventListener('DOMContentLoaded', function() {
                     email: result.user?.email,
                     token: result.token ? 'Token received' : 'No token'
                 });
-                
+
                 showNotification('Akun berhasil dibuat! Silakan login', 'success');
 
                 // Reset form dan switch ke login modal
                 registerForm.reset();
                 registerModal.style.display = 'none';
-                
+
                 setTimeout(() => {
                     loginModal.style.display = 'flex';
                     initLoginModalAnimations();
                 }, 500);
             } else {
-                const errorMsg = result?.message || 'Registrasi gagal, coba lagi';
+                // Better error handling for registration
+                let errorMsg = 'Registrasi gagal, coba lagi';
+
+                if (result && result.message) {
+                    errorMsg = result.message;
+                } else if (result && typeof result === 'object') {
+                    // Handle different error formats
+                    if (result.error) {
+                        errorMsg = result.error;
+                    } else if (result.msg) {
+                        errorMsg = result.msg;
+                    }
+                }
+
                 console.log('❌ Registration FAILED:', {
                     success: result?.success,
                     message: result?.message,
                     error: result?.error,
                     fullResponse: result,
-                    statusCode: result?.statusCode
+                    errorMessage: errorMsg
                 });
+
                 showNotification(errorMsg, 'error');
             }
 
@@ -440,6 +454,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if (logoutNavBtn) logoutNavBtn.style.display = 'none';
 
         showNotification('Logout berhasil', 'success');
+
+        // Refresh page to ensure clean state for next login
+        setTimeout(() => {
+            window.location.reload();
+        }, 1000);
     }
 
     // Handle logout from navbar

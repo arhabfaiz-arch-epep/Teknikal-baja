@@ -1,8 +1,6 @@
 // API Helper for Teknikal Baja Frontend
-// Auto-detect API base URL (localhost for dev, same domain for production)
-const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-    ? 'http://localhost:5000/api'
-    : `${window.location.origin}/api`;
+// API base URL for local development
+const API_BASE = 'http://localhost:5000/api';
 
 class TeknikalBajaAPI {
     constructor() {
