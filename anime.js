@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
     // ===== API Configuration =====
-    const API_BASE = 'http://localhost:5000/api';
+    // Auto-detect API base URL (localhost for dev, same domain for production)
+    const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'http://localhost:5000/api'
+        : `${window.location.origin}/api`;
+    
     let currentUser = null;
     let authToken = null;
 

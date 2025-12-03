@@ -12,14 +12,23 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    credentials: true
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Serve static files
-app.use(express.static(path.join(__dirname)));
+// Serve static files from root
+app.use(express.static(path.join(__dirname), {
+    setHeaders: (res, path) => {
+        if (path.endsWith('.html')) {
+            res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+        }
+    }
+}));
 
-// Routes
+// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/steel', steelRoutes);
 app.use('/api/calculator', calculatorRoutes);
@@ -30,8 +39,16 @@ app.get('/api/health', (req, res) => {
     res.json({
         status: 'OK',
         message: 'Teknikal Baja API is running',
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        environment: process.env.NODE_ENV || 'development'
     });
+});
+
+// Serve index.html for all non-API routes
+app.get('*', (req, res) => {
+    if (!req.path.startsWith('/api/')) {
+        res.sendFile(path.join(__dirname, 'index.html'));
+    }
 });
 
 // Error handling middleware
@@ -40,7 +57,7 @@ app.use((err, req, res, next) => {
     res.status(500).json({
         success: false,
         message: 'Internal server error',
-        error: err.message
+        error: process.env.NODE_ENV === 'production' ? 'Server error' : err.message
     });
 });
 
@@ -48,3 +65,5 @@ app.listen(PORT, () => {
     console.log(`\n🚀 Teknikal Baja API Server running on http://localhost:${PORT}`);
     console.log(`📚 API Health Check: http://localhost:${PORT}/api/health\n`);
 });
+
+module.exports = app;

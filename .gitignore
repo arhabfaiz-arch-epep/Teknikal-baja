@@ -1,0 +1,11 @@
+node_modules/
+npm-debug.log
+.env
+.DS_Store
+.vercelignore
+halaman masuk teknikal baja/
+TODO.md
+*.swp
+*.swo
+*~
+.vscode/
