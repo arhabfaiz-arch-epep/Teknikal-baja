@@ -1,6 +1,18 @@
 // API Helper for Teknikal Baja Frontend
-// API base URL for local development
-const API_BASE = 'http://localhost:5000/api';
+// Smart API endpoint detection
+let API_BASE;
+if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    // Development: Use localhost:5000
+    API_BASE = 'http://localhost:5000/api';
+} else if (window.location.hostname.includes('vercel.app')) {
+    // Production: Use /api (same domain)
+    API_BASE = '/api';
+} else {
+    // Fallback for other environments
+    API_BASE = '/api';
+}
+
+console.log('🔧 API_HELPER: API_BASE =', API_BASE);
 
 class TeknikalBajaAPI {
     constructor() {
@@ -45,15 +57,23 @@ class TeknikalBajaAPI {
             const data = await response.json();
 
             if (!response.ok) {
-                TeknikalBajaAPI.showNotification(data.message || 'Error terjadi', 'error');
-                return null;
+                console.error('API Error:', response.status, data);
+                // Return error response with message intact
+                return {
+                    success: false,
+                    message: data.message || 'Error terjadi',
+                    statusCode: response.status,
+                    ...data
+                };
             }
 
             return data;
         } catch (error) {
-            TeknikalBajaAPI.showNotification('Network error: ' + error.message, 'error');
-            console.error('API Error:', error);
-            return null;
+            console.error('API Fetch Error:', error);
+            return {
+                success: false,
+                message: 'Network error: ' + error.message
+            };
         }
     }
 
@@ -64,12 +84,21 @@ class TeknikalBajaAPI {
             this.token = result.token;
             localStorage.setItem('authToken', this.token);
             localStorage.setItem('currentUser', JSON.stringify(result.user));
+            console.log('✅ Login success via api-helper');
+        } else {
+            console.log('❌ Login failed via api-helper:', result?.message);
         }
         return result;
     }
 
     async register(username, email, password, name) {
-        return await this.call('/auth/register', 'POST', { username, email, password, name });
+        const result = await this.call('/auth/register', 'POST', { username, email, password, name });
+        if (result && result.success) {
+            console.log('✅ Register success via api-helper');
+        } else {
+            console.log('❌ Register failed via api-helper:', result?.message);
+        }
+        return result;
     }
 
     async verify() {

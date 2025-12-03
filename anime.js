@@ -1,7 +1,17 @@
 document.addEventListener('DOMContentLoaded', function() {
     // ===== API Configuration =====
-    // API base URL for local development
-    const API_BASE = 'http://localhost:5000/api';
+    // Smart API endpoint detection
+    let API_BASE;
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        // Development: Use localhost:5000
+        API_BASE = 'http://localhost:5000/api';
+    } else if (window.location.hostname.includes('vercel.app')) {
+        // Production: Use /api (same domain)
+        API_BASE = '/api';
+    } else {
+        // Fallback for other environments
+        API_BASE = '/api';
+    }
     
     console.log('🔧 API BASE:', API_BASE);
     console.log('🌍 Window location:', window.location.origin);
