@@ -1,292 +1,202 @@
 const express = require('express');
-const fs = require('fs').promises;
+const fs = require('fs');
 const path = require('path');
 
 const router = express.Router();
 
-// Path to profiles data file
-const PROFILES_FILE = path.join(__dirname, '../data/profiles.json');
+const PROFILES_FILE = path.join(__dirname, '../data/users.json');
 
-// Helper function to read profiles data
-async function readProfilesData() {
+// In-memory cache
+let profilesDataCache = null;
+
+function readProfilesData() {
+    if (profilesDataCache) {
+        return profilesDataCache;
+    }
+    
     try {
-        const data = await fs.readFile(PROFILES_FILE, 'utf8');
-        return JSON.parse(data);
+        const data = fs.readFileSync(PROFILES_FILE, 'utf8');
+        profilesDataCache = JSON.parse(data);
+        return profilesDataCache;
     } catch (error) {
-        throw new Error('Failed to read profiles data');
+        console.log('Profiles data read failed, returning empty');
+        return [];
     }
 }
 
-// Helper function to write profiles data
-async function writeProfilesData(data) {
+function writeProfilesData(data) {
+    profilesDataCache = data;
+    
     try {
-        await fs.writeFile(PROFILES_FILE, JSON.stringify(data, null, 2), 'utf8');
+        fs.writeFileSync(PROFILES_FILE, JSON.stringify(data, null, 2));
     } catch (error) {
-        throw new Error('Failed to write profiles data');
+        console.log('File write failed (expected on Vercel), using in-memory storage');
     }
 }
 
-// Get user profile by ID
-router.get('/:userId', async (req, res) => {
+// Get leaderboard
+router.get('/', (req, res) => {
     try {
-        const { userId } = req.params;
-        const data = await readProfilesData();
-        const profile = data.profiles.find(p => p.id === userId);
-
-        if (!profile) {
-            return res.status(404).json({
-                success: false,
-                message: 'Profil pengguna tidak ditemukan'
+        const users = readProfilesData();
+        const sorted = users
+            .sort((a, b) => (b.points || 0) - (a.points || 0))
+            .slice(0, 10)
+            .map(u => {
+                const { password, ...rest } = u;
+                return rest;
             });
-        }
 
         res.json({
             success: true,
-            data: profile
+            data: sorted,
+            count: sorted.length
         });
     } catch (error) {
-        console.error('Get profile error:', error);
         res.status(500).json({
             success: false,
-            message: 'Terjadi kesalahan saat mengambil data profil'
+            message: 'Terjadi kesalahan'
+        });
+    }
+});
+
+// Get user profile
+router.get('/:userId', (req, res) => {
+    try {
+        const { userId } = req.params;
+        const users = readProfilesData();
+        const user = users.find(u => u.id === userId);
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User tidak ditemukan'
+            });
+        }
+
+        const { password, ...userWithoutPassword } = user;
+        res.json({
+            success: true,
+            data: userWithoutPassword
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Terjadi kesalahan'
         });
     }
 });
 
 // Update user profile
-router.put('/:userId', async (req, res) => {
+router.put('/:userId', (req, res) => {
     try {
         const { userId } = req.params;
         const updates = req.body;
-        const data = await readProfilesData();
 
-        const profileIndex = data.profiles.findIndex(p => p.id === userId);
-        if (profileIndex === -1) {
+        const users = readProfilesData();
+        const userIndex = users.findIndex(u => u.id === userId);
+
+        if (userIndex === -1) {
             return res.status(404).json({
                 success: false,
-                message: 'Profil pengguna tidak ditemukan'
+                message: 'User tidak ditemukan'
             });
         }
 
-        // Update profile (only allow certain fields)
-        const allowedUpdates = ['fullName', 'preferences', 'stats'];
-        allowedUpdates.forEach(field => {
-            if (updates[field] !== undefined) {
-                data.profiles[profileIndex][field] = updates[field];
-            }
-        });
+        users[userIndex] = { ...users[userIndex], ...updates, password: users[userIndex].password };
+        writeProfilesData(users);
 
-        await writeProfilesData(data);
-
+        const { password, ...userWithoutPassword } = users[userIndex];
         res.json({
             success: true,
-            data: data.profiles[profileIndex],
-            message: 'Profil berhasil diperbarui'
+            message: 'Profile berhasil diperbarui',
+            data: userWithoutPassword
         });
     } catch (error) {
-        console.error('Update profile error:', error);
         res.status(500).json({
             success: false,
-            message: 'Terjadi kesalahan saat memperbarui profil'
+            message: 'Terjadi kesalahan'
         });
     }
 });
 
-// Add achievement to user profile
-router.post('/:userId/achievements', async (req, res) => {
+// Add points
+router.post('/:userId/add-points', (req, res) => {
     try {
         const { userId } = req.params;
-        const { achievementId } = req.body;
+        const { points } = req.body;
 
-        if (!achievementId) {
+        if (!points) {
             return res.status(400).json({
                 success: false,
-                message: 'ID achievement harus diisi'
+                message: 'Points harus diisi'
             });
         }
 
-        const data = await readProfilesData();
-        const profile = data.profiles.find(p => p.id === userId);
-        const achievement = data.achievements.find(a => a.id === achievementId);
+        const users = readProfilesData();
+        const userIndex = users.findIndex(u => u.id === userId);
 
-        if (!profile) {
+        if (userIndex === -1) {
             return res.status(404).json({
                 success: false,
-                message: 'Profil pengguna tidak ditemukan'
+                message: 'User tidak ditemukan'
             });
         }
 
-        if (!achievement) {
-            return res.status(404).json({
-                success: false,
-                message: 'Achievement tidak ditemukan'
-            });
-        }
-
-        // Check if user already has this achievement
-        const hasAchievement = profile.achievements.some(a => a.id === achievementId);
-        if (hasAchievement) {
-            return res.status(400).json({
-                success: false,
-                message: 'Achievement sudah dimiliki pengguna'
-            });
-        }
-
-        // Add achievement to profile
-        const newAchievement = {
-            id: achievement.id,
-            name: achievement.name,
-            description: achievement.description,
-            icon: achievement.icon,
-            earnedDate: new Date().toISOString().split('T')[0]
-        };
-
-        profile.achievements.push(newAchievement);
-        profile.points += achievement.points;
-
-        await writeProfilesData(data);
+        users[userIndex].points = (users[userIndex].points || 0) + points;
+        writeProfilesData(users);
 
         res.json({
             success: true,
-            data: {
-                achievement: newAchievement,
-                newPoints: profile.points
-            },
-            message: 'Achievement berhasil ditambahkan'
+            message: 'Points berhasil ditambahkan',
+            data: { points: users[userIndex].points }
         });
     } catch (error) {
-        console.error('Add achievement error:', error);
         res.status(500).json({
             success: false,
-            message: 'Terjadi kesalahan saat menambahkan achievement'
+            message: 'Terjadi kesalahan'
         });
     }
 });
 
-// Update user stats
-router.post('/:userId/stats', async (req, res) => {
+// Add achievement
+router.post('/:userId/add-achievement', (req, res) => {
     try {
         const { userId } = req.params;
-        const { statType, increment = 1 } = req.body;
-
-        if (!statType) {
-            return res.status(400).json({
-                success: false,
-                message: 'Tipe statistik harus diisi'
-            });
-        }
-
-        const data = await readProfilesData();
-        const profile = data.profiles.find(p => p.id === userId);
-
-        if (!profile) {
-            return res.status(404).json({
-                success: false,
-                message: 'Profil pengguna tidak ditemukan'
-            });
-        }
-
-        // Initialize stat if it doesn't exist
-        if (!profile.stats[statType]) {
-            profile.stats[statType] = 0;
-        }
-
-        // Update stat
-        profile.stats[statType] += increment;
-
-        // Check for achievement unlocks based on stats
-        const achievementsToCheck = data.achievements.filter(a =>
-            a.id.includes('read') && statType === 'articlesRead' ||
-            a.id.includes('calculator') && statType === 'calculationsDone'
-        );
-
-        const newAchievements = [];
-        for (const achievement of achievementsToCheck) {
-            if (achievement.tiers) {
-                // Check tiered achievements
-                for (const tier of achievement.tiers) {
-                    if (profile.stats[statType] >= tier.threshold) {
-                        const tierAchievementId = `${achievement.id}-${tier.threshold}`;
-                        const hasTier = profile.achievements.some(a => a.id === tierAchievementId);
-
-                        if (!hasTier) {
-                            const tierAchievement = {
-                                id: tierAchievementId,
-                                name: `${achievement.name} - ${tier.name}`,
-                                description: achievement.description,
-                                icon: achievement.icon,
-                                earnedDate: new Date().toISOString().split('T')[0]
-                            };
-                            profile.achievements.push(tierAchievement);
-                            profile.points += achievement.points;
-                            newAchievements.push(tierAchievement);
-                        }
-                    }
-                }
-            }
-        }
-
-        await writeProfilesData(data);
-
-        res.json({
-            success: true,
-            data: {
-                stats: profile.stats,
-                newAchievements: newAchievements,
-                newPoints: profile.points
-            },
-            message: 'Statistik berhasil diperbarui'
-        });
-    } catch (error) {
-        console.error('Update stats error:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Terjadi kesalahan saat memperbarui statistik'
-        });
-    }
-});
-
-// Get all achievements
-router.get('/achievements/all', async (req, res) => {
-    try {
-        const data = await readProfilesData();
-        res.json({
-            success: true,
-            data: data.achievements,
-            count: data.achievements.length
-        });
-    } catch (error) {
-        console.error('Get achievements error:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Terjadi kesalahan saat mengambil data achievements'
-        });
-    }
-});
-
-// Get achievement by ID
-router.get('/achievements/:achievementId', async (req, res) => {
-    try {
-        const { achievementId } = req.params;
-        const data = await readProfilesData();
-        const achievement = data.achievements.find(a => a.id === achievementId);
+        const { achievement } = req.body;
 
         if (!achievement) {
-            return res.status(404).json({
+            return res.status(400).json({
                 success: false,
-                message: 'Achievement tidak ditemukan'
+                message: 'Achievement harus diisi'
             });
         }
 
+        const users = readProfilesData();
+        const userIndex = users.findIndex(u => u.id === userId);
+
+        if (userIndex === -1) {
+            return res.status(404).json({
+                success: false,
+                message: 'User tidak ditemukan'
+            });
+        }
+
+        if (!users[userIndex].achievements) {
+            users[userIndex].achievements = [];
+        }
+
+        users[userIndex].achievements.push(achievement);
+        writeProfilesData(users);
+
         res.json({
             success: true,
-            data: achievement
+            message: 'Achievement berhasil ditambahkan',
+            data: { achievements: users[userIndex].achievements }
         });
     } catch (error) {
-        console.error('Get achievement error:', error);
         res.status(500).json({
             success: false,
-            message: 'Terjadi kesalahan saat mengambil data achievement'
+            message: 'Terjadi kesalahan'
         });
     }
 });

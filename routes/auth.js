@@ -6,19 +6,67 @@ const { v4: uuidv4 } = require('uuid');
 
 const usersFile = path.join(__dirname, '../data/users.json');
 
-// Helper function to read users
-function getUsers() {
+// In-memory storage for users (session-based)
+let usersInMemory = null;
+
+// Default users
+const DEFAULT_USERS = [
+    {
+        id: 'user-admin001',
+        username: 'admin',
+        email: 'admin@teknikalbaja.com',
+        password: 'admin',
+        name: 'Administrator',
+        level: 'Expert',
+        points: 1000,
+        joinDate: '2024-01-01',
+        achievements: [
+            { id: 'master', name: 'Master User', icon: '👑' }
+        ]
+    },
+    {
+        id: 'user-engineer001',
+        username: 'engineer',
+        email: 'engineer@teknikalbaja.com',
+        password: 'engineer',
+        name: 'Engineer User',
+        level: 'Intermediate',
+        points: 500,
+        joinDate: '2024-01-15',
+        achievements: [
+            { id: 'scholar', name: 'Scholar', icon: '🎓' }
+        ]
+    }
+];
+
+// Helper function to read users from file (fallback)
+function getUsersFromFile() {
     try {
         const data = fs.readFileSync(usersFile, 'utf8');
         return JSON.parse(data);
     } catch (err) {
-        return [];
+        return DEFAULT_USERS;
     }
 }
 
-// Helper function to save users
+// Helper function to get users (memory first, then file)
+function getUsers() {
+    if (!usersInMemory) {
+        usersInMemory = getUsersFromFile();
+    }
+    return usersInMemory;
+}
+
+// Helper function to save users (try file, but keep in memory always)
 function saveUsers(users) {
-    fs.writeFileSync(usersFile, JSON.stringify(users, null, 2));
+    usersInMemory = users;
+    
+    // Try to save to file (will fail on Vercel, but that's OK)
+    try {
+        fs.writeFileSync(usersFile, JSON.stringify(users, null, 2));
+    } catch (err) {
+        console.log('File write not available (expected on Vercel), using in-memory storage');
+    }
 }
 
 // POST: Login
@@ -83,7 +131,7 @@ router.post('/register', (req, res) => {
         id: `user-${uuidv4().substring(0, 8)}`,
         username,
         email,
-        password, // In production, use bcrypt
+        password,
         name,
         level: 'Beginner',
         points: 0,

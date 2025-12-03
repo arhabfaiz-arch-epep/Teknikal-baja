@@ -1,33 +1,39 @@
 const express = require('express');
-const fs = require('fs').promises;
+const fs = require('fs');
 const path = require('path');
 
 const router = express.Router();
 
-// Path to steel data file
-const STEEL_FILE = path.join(__dirname, '../data/steel.json');
+const STEEL_FILE = path.join(__dirname, '../data/steels.json');
 
-// Helper function to read steel data
-async function readSteelData() {
+// In-memory cache
+let steelDataCache = null;
+
+function readSteelData() {
+    if (steelDataCache) {
+        return steelDataCache;
+    }
+    
     try {
-        const data = await fs.readFile(STEEL_FILE, 'utf8');
-        return JSON.parse(data);
+        const data = fs.readFileSync(STEEL_FILE, 'utf8');
+        steelDataCache = JSON.parse(data);
+        return steelDataCache;
     } catch (error) {
-        throw new Error('Failed to read steel data');
+        console.log('Steel data read from file failed, using default');
+        return { types: [], standards: {} };
     }
 }
 
 // Get all steel types
-router.get('/types', async (req, res) => {
+router.get('/types', (req, res) => {
     try {
-        const data = await readSteelData();
+        const data = readSteelData();
         res.json({
             success: true,
-            data: data.types,
-            count: data.types.length
+            data: data.types || [],
+            count: (data.types || []).length
         });
     } catch (error) {
-        console.error('Get steel types error:', error);
         res.status(500).json({
             success: false,
             message: 'Terjadi kesalahan saat mengambil data jenis baja'
@@ -36,13 +42,13 @@ router.get('/types', async (req, res) => {
 });
 
 // Get steel type by ID
-router.get('/types/:id', async (req, res) => {
+router.get('/types/:id', (req, res) => {
     try {
         const { id } = req.params;
-        const data = await readSteelData();
-        const steelType = data.types.find(type => type.id === id);
+        const data = readSteelData();
+        const steel = data.types.find(s => s.id === id);
 
-        if (!steelType) {
+        if (!steel) {
             return res.status(404).json({
                 success: false,
                 message: 'Jenis baja tidak ditemukan'
@@ -51,150 +57,112 @@ router.get('/types/:id', async (req, res) => {
 
         res.json({
             success: true,
-            data: steelType
+            data: steel
         });
     } catch (error) {
-        console.error('Get steel type error:', error);
         res.status(500).json({
             success: false,
-            message: 'Terjadi kesalahan saat mengambil data jenis baja'
+            message: 'Terjadi kesalahan'
         });
     }
 });
 
-// Get steel standards
-router.get('/standards', async (req, res) => {
+// Get all standards
+router.get('/standards', (req, res) => {
     try {
-        const data = await readSteelData();
+        const data = readSteelData();
         res.json({
             success: true,
-            data: data.standards
+            data: data.standards || {},
+            count: Object.keys(data.standards || {}).length
         });
     } catch (error) {
-        console.error('Get standards error:', error);
         res.status(500).json({
             success: false,
-            message: 'Terjadi kesalahan saat mengambil data standar'
+            message: 'Terjadi kesalahan saat mengambil standar'
         });
     }
 });
 
-// Get standards by organization
-router.get('/standards/:org', async (req, res) => {
+// Get standards by region
+router.get('/standards/:region', (req, res) => {
     try {
-        const { org } = req.params;
-        const data = await readSteelData();
+        const { region } = req.params;
+        const data = readSteelData();
+        const standards = data.standards[region];
 
-        if (!data.standards[org.toUpperCase()]) {
+        if (!standards) {
             return res.status(404).json({
                 success: false,
-                message: 'Organisasi standar tidak ditemukan'
+                message: 'Standar tidak ditemukan'
             });
         }
 
         res.json({
             success: true,
-            data: data.standards[org.toUpperCase()],
-            organization: org.toUpperCase()
+            data: standards
         });
     } catch (error) {
-        console.error('Get standards by org error:', error);
         res.status(500).json({
             success: false,
-            message: 'Terjadi kesalahan saat mengambil data standar'
+            message: 'Terjadi kesalahan'
         });
     }
 });
 
-// Get knowledge articles
-router.get('/knowledge', async (req, res) => {
+// Search steel
+router.get('/search', (req, res) => {
     try {
-        const { category } = req.query;
-        const data = await readSteelData();
-
-        let knowledge = data.knowledge;
-        if (category) {
-            knowledge = knowledge.filter(item => item.category === category);
-        }
-
-        res.json({
-            success: true,
-            data: knowledge,
-            count: knowledge.length,
-            category: category || 'all'
-        });
-    } catch (error) {
-        console.error('Get knowledge error:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Terjadi kesalahan saat mengambil data pengetahuan'
-        });
-    }
-});
-
-// Get knowledge article by ID
-router.get('/knowledge/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        const data = await readSteelData();
-        const article = data.knowledge.find(item => item.id === id);
-
-        if (!article) {
-            return res.status(404).json({
+        const { query } = req.query;
+        if (!query) {
+            return res.status(400).json({
                 success: false,
-                message: 'Artikel pengetahuan tidak ditemukan'
+                message: 'Query harus diisi'
             });
         }
 
-        res.json({
-            success: true,
-            data: article
-        });
-    } catch (error) {
-        console.error('Get knowledge article error:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Terjadi kesalahan saat mengambil artikel pengetahuan'
-        });
-    }
-});
-
-// Search steel types
-router.get('/search', async (req, res) => {
-    try {
-        const { q, category } = req.query;
-        const data = await readSteelData();
-
-        let results = data.types;
-
-        // Filter by category if provided
-        if (category) {
-            results = results.filter(type => type.category.toLowerCase() === category.toLowerCase());
-        }
-
-        // Search by query if provided
-        if (q) {
-            const query = q.toLowerCase();
-            results = results.filter(type =>
-                type.name.toLowerCase().includes(query) ||
-                type.description.toLowerCase().includes(query) ||
-                type.applications.some(app => app.toLowerCase().includes(query)) ||
-                type.standards.some(std => std.toLowerCase().includes(query))
-            );
-        }
+        const data = readSteelData();
+        const results = data.types.filter(s =>
+            s.name.toLowerCase().includes(query.toLowerCase()) ||
+            s.description.toLowerCase().includes(query.toLowerCase())
+        );
 
         res.json({
             success: true,
             data: results,
-            count: results.length,
-            query: q,
-            category: category
+            count: results.length
         });
     } catch (error) {
-        console.error('Search error:', error);
         res.status(500).json({
             success: false,
-            message: 'Terjadi kesalahan saat pencarian'
+            message: 'Terjadi kesalahan saat mencari'
+        });
+    }
+});
+
+// Compare steel
+router.get('/compare', (req, res) => {
+    try {
+        const { ids } = req.query;
+        if (!ids) {
+            return res.status(400).json({
+                success: false,
+                message: 'IDs harus diisi'
+            });
+        }
+
+        const idArray = ids.split(',');
+        const data = readSteelData();
+        const comparison = data.types.filter(s => idArray.includes(s.id));
+
+        res.json({
+            success: true,
+            data: comparison
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Terjadi kesalahan saat membandingkan'
         });
     }
 });
