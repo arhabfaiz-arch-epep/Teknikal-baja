@@ -64,5 +64,16 @@
     "points": 0,
     "joinDate": "2025-12-03",
     "achievements": []
+  },
+  {
+    "id": "user-c09cd31d",
+    "username": "azzam",
+    "email": "izz123@gmail.com",
+    "password": "azzam123",
+    "name": "azzam ramadan",
+    "level": "Beginner",
+    "points": 0,
+    "joinDate": "2025-12-03",
+    "achievements": []
   }
 ]
