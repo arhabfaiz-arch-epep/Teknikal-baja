@@ -5,6 +5,13 @@ document.addEventListener('DOMContentLoaded', function() {
         ? 'http://localhost:5000/api'
         : `${window.location.origin}/api`;
     
+    console.log('🔧 API BASE:', API_BASE);
+    console.log('🌍 Window location:', window.location.origin);
+    console.log('💾 LocalStorage:', {
+        authToken: localStorage.getItem('authToken') ? 'Present' : 'Empty',
+        currentUser: localStorage.getItem('currentUser') ? 'Present' : 'Empty'
+    });
+    
     let currentUser = null;
     let authToken = null;
 
@@ -178,6 +185,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 localStorage.setItem('authToken', authToken);
                 localStorage.setItem('currentUser', JSON.stringify(currentUser));
 
+                console.log('✅ Login SUCCESS:', {
+                    userId: result.user?.id,
+                    username: result.user?.username,
+                    email: result.user?.email,
+                    token: result.token ? 'Token received' : 'No token',
+                    localStorageSet: {
+                        authToken: localStorage.getItem('authToken') ? 'Set' : 'Failed',
+                        currentUser: localStorage.getItem('currentUser') ? 'Set' : 'Failed'
+                    }
+                });
+
                 showNotification('Login berhasil! 🎉', 'success');
 
                 // Animasi fade out login modal
@@ -226,7 +244,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             } else {
                 const errorMsg = result?.message || 'Login gagal, coba lagi';
-                console.log('Login failed:', result);
+                console.log('❌ Login FAILED:', {
+                    success: result?.success,
+                    message: result?.message,
+                    error: result?.error,
+                    fullResponse: result,
+                    statusCode: result?.statusCode
+                });
                 showNotification(errorMsg, 'error');
             }
 
@@ -279,6 +303,14 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             if (result && result.success) {
+                console.log('✅ Registration SUCCESS:', {
+                    success: result.success,
+                    userId: result.user?.id,
+                    username: result.user?.username,
+                    email: result.user?.email,
+                    token: result.token ? 'Token received' : 'No token'
+                });
+                
                 showNotification('Akun berhasil dibuat! Silakan login', 'success');
 
                 // Reset form dan switch ke login modal
@@ -291,7 +323,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, 500);
             } else {
                 const errorMsg = result?.message || 'Registrasi gagal, coba lagi';
-                console.log('Registration failed:', result);
+                console.log('❌ Registration FAILED:', {
+                    success: result?.success,
+                    message: result?.message,
+                    error: result?.error,
+                    fullResponse: result,
+                    statusCode: result?.statusCode
+                });
                 showNotification(errorMsg, 'error');
             }
 
