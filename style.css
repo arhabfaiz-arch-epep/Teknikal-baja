@@ -957,6 +957,14 @@ input::-webkit-inner-spin-button {
     color: #333;
     margin-bottom: 0.6rem;
     font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.tool-card h3 i {
+    color: #667eea;
+    font-size: 1.2rem;
 }
 
 .tool-card p {
@@ -1000,6 +1008,16 @@ input::-webkit-inner-spin-button {
     font-weight: 600;
     transition: all 0.3s ease;
     text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.tool-input button i {
+    font-size: 1rem;
+}
     font-size: 0.85rem;
     letter-spacing: 0.5px;
 }
@@ -1211,6 +1229,27 @@ input::-webkit-inner-spin-button {
     height: 4px;
     background: linear-gradient(90deg, #667eea, #764ba2);
     border-radius: 2px;
+}
+
+/* ============ FEATURE ICON STYLING ============ */
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.feature-icon i {
+    color: #667eea;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+.feature-item:hover .feature-icon i {
+    color: #764ba2;
+    opacity: 1;
+    transform: scale(1.15) rotate(-5deg);
 }
 
 /* ============ RESPONSIVE ============ */
