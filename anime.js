@@ -65,15 +65,17 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await response.json();
 
             if (!response.ok) {
-                showNotification(data.message || 'Error terjadi', 'error');
-                return null;
+                console.error('API Error Response:', response.status, data);
+                return data; // Return the error response with message
             }
 
             return data;
         } catch (error) {
-            showNotification('Network error: ' + error.message, 'error');
-            console.error('API Error:', error);
-            return null;
+            console.error('API Fetch Error:', error);
+            return {
+                success: false,
+                message: 'Network error: ' + error.message
+            };
         }
     }
 
@@ -222,6 +224,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         loadDashboardData();
                     }
                 });
+            } else {
+                const errorMsg = result?.message || 'Login gagal, coba lagi';
+                console.log('Login failed:', result);
+                showNotification(errorMsg, 'error');
             }
 
             // Reset button
@@ -284,8 +290,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     initLoginModalAnimations();
                 }, 500);
             } else {
+                const errorMsg = result?.message || 'Registrasi gagal, coba lagi';
                 console.log('Registration failed:', result);
-                showNotification(result?.message || 'Registrasi gagal, coba lagi', 'error');
+                showNotification(errorMsg, 'error');
             }
 
             // Reset button
