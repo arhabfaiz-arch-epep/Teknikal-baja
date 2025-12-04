@@ -1,535 +1,66 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <!-- Font Awesome for professional icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="shortcut icon" href="logo baru.jpg" type="image/x-">
-    <title>Teknikal Baja - Platform Edukasi & Informasi Baja</title>
-</head>
-<body>
-    
-    <nav class="navbar" id="navbar">
-        <div class="navbar-container">
-            <div class="navbar-logo">
-                <span class="logo-icon"><i class="material-icons">business</i></span>
-                <span class="logo-text">Teknikal Baja</span>
-            </div>
-            <div class="navbar-auth" id="navbarAuth">
-                <button class="login-navbar-btn" id="loginNavBtn" style="display: block;">
-                    <span class="btn-icon"><i class="material-icons">lock</i></span> Masuk
-                </button>
-                <button class="logout-navbar-btn" id="logoutNavBtn" style="display: none;">
-                    <span class="btn-icon"><i class="fas fa-sign-out-alt"></i></span> Logout
-                </button>
-            </div>
-        </div>
-    </nav>
-
-    
-    <section class="welcome-section" id="welcomeScreen">
-        <div class="welcome-background"></div>
-        <div class="welcome-content">
-            <div class="welcome-container">
-                <h1 class="welcome-title">
-                    Selamat Datang di <span class="highlight">Teknikal Baja</span>
-                </h1>
-                <p class="welcome-subtitle">Pusat Pembelajaran Teknis Baja untuk Profesional dan Pelajar</p>
-                <p class="welcome-description">Pelajari semua tentang material baja, standar internasional, dan aplikasi teknis dengan panduan lengkap dari para ahli</p>
-
-                <div class="welcome-buttons">
-                    <button class="btn-primary" id="exploreBtn">
-                        <span class="btn-icon"><i class="fas fa-rocket"></i></span> Jelajahi Sekarang
-                    </button>
-                    <button class="btn-secondary" id="learnMoreBtn">
-                        <span class="btn-icon"><i class="fas fa-book-open"></i></span> Pelajari Lebih Lanjut
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Login Modal -->
-    <div class="login-modal" id="loginModal" style="display: none;">
-        <div class="modal-overlay" id="modalOverlay"></div>
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Masuk ke Akun</h2>
-                <button class="modal-close" id="closeLoginBtn">&times;</button>
-            </div>
-            <form class="login-form" id="loginForm" autocomplete="off">
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" placeholder="Masukkan username" autocomplete="off" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="Masukkan password" autocomplete="off" required>
-                </div>
-
-                <button type="submit" class="btn-submit">Masuk</button>
-            </form>
-            <p class="modal-footer">Belum punya akun? <a href="#" id="showRegisterLink">Daftar di sini</a></p>
-        </div>
-    </div>
-
-   
-    <div class="login-modal" id="registerModal" style="display: none;">
-        <div class="modal-overlay" id="registerModalOverlay"></div>
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Buat Akun Baru</h2>
-                <button class="modal-close" id="closeRegisterBtn">&times;</button>
-            </div>
-            <form class="login-form" id="registerForm" autocomplete="off">
-                <div class="form-group">
-                    <label for="reg-fullname">Nama Lengkap</label>
-                    <input type="text" id="reg-fullname" placeholder="Masukkan nama lengkap" autocomplete="off" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="reg-username">Username</label>
-                    <input type="text" id="reg-username" placeholder="Masukkan username" autocomplete="off" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="reg-email">Email</label>
-                    <input type="email" id="reg-email" placeholder="Masukkan email" autocomplete="off" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="reg-password">Password</label>
-                    <input type="password" id="reg-password" placeholder="Masukkan password" autocomplete="off" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="reg-password-confirm">Konfirmasi Password</label>
-                    <input type="password" id="reg-password-confirm" placeholder="Konfirmasi password" autocomplete="off" required>
-                </div>
-
-                <button type="submit" class="btn-submit">Daftar</button>
-            </form>
-            <p class="modal-footer">Sudah punya akun? <a href="#" id="showLoginLink">Masuk di sini</a></p>
-        </div>
-    </div>
-
-    <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar" style="display: none;">
-        <div class="sidebar-header">
-            <div class="logo">
-                <div class="logo-icon"><i class="fas fa-building"></i></div>
-                <span>Teknikal Baja</span>
-            </div>
-        </div>
-
-        <ul class="sidebar-menu">
-            <li class="menu-item">
-                <a href="#dashboard" class="menu-link active">
-                    <span class="menu-icon"><i class="fas fa-chart-line"></i></span>
-                    <span>Dashboard</span>
-                    <span class="menu-badge">4</span>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="#pengetahuan" class="menu-link">
-                    <span class="menu-icon"><i class="fas fa-book"></i></span>
-                    <span>Pengetahuan</span>
-                    <span class="menu-badge secondary">163</span>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="#jenis-baja" class="menu-link">
-                    <span class="menu-icon"><i class="fas fa-cogs"></i></span>
-                    <span>Jenis Baja</span>
-                    <span class="menu-badge warning">640</span>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="#standar" class="menu-link">
-                    <span class="menu-icon"><i class="fas fa-check-circle"></i></span>
-                    <span>Standar</span>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="#tools" class="menu-link">
-                    <span class="menu-icon"><i class="fas fa-wrench"></i></span>
-                    <span>Tools Kalkulator</span>
-                </a>
-            </li>
-            <li class="menu-item" style="margin-top: 3rem; border-top: 1px solid rgba(102, 126, 234, 0.2); padding-top: 1rem;">
-                <a href="#profil" class="menu-link">
-                    <span class="menu-icon"><i class="fas fa-user"></i></span>
-                    <span>Profil</span>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="#" class="menu-link logout-btn">
-                    <span class="menu-icon"><i class="fas fa-sign-out-alt"></i></span>
-                    <span>Logout</span>
-                </a>
-            </li>
-        </ul>
-    </aside>
-
-    <!-- Main Content -->
-    <div class="main-content" id="mainContent" style="display: none;">
-        <!-- Top Navbar -->
-        <nav class="top-navbar">
-            <div class="nav-title" id="nav-title">Dashboard</div>
-            <div class="nav-right">
-                <span class="nav-icon"><i class="fas fa-bell"></i></span>
-                <span class="nav-icon"><i class="fas fa-user"></i></span>
-                <span class="nav-icon"><i class="fas fa-cog"></i></span>
-            </div>
-        </nav>
-
-        <!-- Dashboard Section -->
-        <section class="dashboard" id="dashboard" style="display: block;">
-            <div class="dashboard-container">
-                <div class="welcome-card">
-                    <h1>Selamat Datang di Platform Teknikal Baja</h1>
-                    <p>Pusat pembelajaran teknis baja yang komprehensif untuk profesional dan pelajar</p>
-                </div>
-
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon"><i class="fas fa-book"></i></div>
-                        <h3>Artikel</h3>
-                        <p class="stat-number">150+</p>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon"><i class="fas fa-microscope"></i></div>
-                        <h3>Data Teknis</h3>
-                        <p class="stat-number">320</p>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon"><i class="fas fa-star"></i></div>
-                        <h3>Rating</h3>
-                        <p class="stat-number">4.9</p>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon"><i class="fas fa-users"></i></div>
-                        <h3>Member Aktif</h3>
-                        <p class="stat-number">8.5K</p>
-                    </div>
-                </div>
-
-                <div class="features-section">
-                    <h2>Fitur Unggulan</h2>
-                    <div class="features-grid">
-                        <div class="feature-item">
-                            <div class="feature-icon"><i class="fas fa-book-stack"></i></div>
-                            <h4>Materi Lengkap</h4>
-                            <p>Panduan komprehensif tentang teknikal baja dari dasar hingga lanjut</p>
-                        </div>
-                        <div class="feature-item">
-                            <div class="feature-icon"><i class="fas fa-magnifying-glass"></i></div>
-                            <h4>Database Teknis</h4>
-                            <p>Akses lengkap ke spesifikasi dan standar baja internasional</p>
-                        </div>
-                        <div class="feature-item">
-                            <div class="feature-icon"><i class="fas fa-chart-bar"></i></div>
-                            <h4>Analisis Data</h4>
-                            <p>Tools perhitungan dan analisis sifat mekanis baja</p>
-                        </div>
-                        <div class="feature-item">
-                            <div class="feature-icon"><i class="fas fa-globe"></i></div>
-                            <h4>Standar Global</h4>
-                            <p>Referensi standar ASTM, JIS, EN, dan ISO terpercaya</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Pengetahuan Section -->
-        <section class="knowledge" id="pengetahuan" style="display: none;">
-            <div class="section-container">
-                <h2><i class="fas fa-book-stack"></i> Pengetahuan Teknikal Baja</h2>
-
-                <div class="knowledge-grid">
-                    <div class="knowledge-card">
-                        <div class="card-icon"><i class="fas fa-book"></i></div>
-                        <h3>Pengertian Teknikal Baja</h3>
-                        <p>Teknikal baja adalah kumpulan informasi teknis yang menjelaskan karakteristik, kekuatan, dan spesifikasi material baja. Data ini mencakup komposisi kimia, sifat mekanis, grade, dan proses pengolahan.</p>
-                        <a href="#" class="card-link">Pelajari Lebih Lanjut →</a>
-                    </div>
-
-                    <div class="knowledge-card">
-                        <div class="card-icon"><i class="fas fa-flask-vial"></i></div>
-                        <h3>Sifat Mekanis Baja</h3>
-                        <p>Memahami sifat mekanis seperti kekuatan tarik, kekuatan luluh, kekerasan, kelenturan, dan ketangguhan adalah kunci untuk memilih baja yang tepat.</p>
-                        <a href="#" class="card-link">Pelajari Lebih Lanjut →</a>
-                    </div>
-
-                    <div class="knowledge-card">
-                        <div class="card-icon"><i class="fas fa-atom"></i></div>
-                        <h3>Komposisi Kimia</h3>
-                        <p>Unsur seperti karbon, mangan, silikon, krom, dan nikel menentukan kualitas dan kekuatan baja. Perbedaan kadar inilah yang membuat setiap grade baja berbeda.</p>
-                        <a href="#" class="card-link">Pelajari Lebih Lanjut →</a>
-                    </div>
-
-                    <div class="knowledge-card">
-                        <div class="card-icon"><i class="fas fa-wrench"></i></div>
-                        <h3>Proses Pengolahan</h3>
-                        <p>Welding, hot rolled, cold rolled, heat treatment, dan cutting adalah proses-proses yang mempengaruhi sifat akhir baja dan aplikasinya.</p>
-                        <a href="#" class="card-link">Pelajari Lebih Lanjut →</a>
-                    </div>
-
-                    <div class="knowledge-card">
-                        <div class="card-icon"><i class="fas fa-shield"></i></div>
-                        <h3>Ketahanan Korosi</h3>
-                        <p>Memahami ketahanan korosi dan perlindungan material sangat penting untuk memastikan durabilitas struktur dalam lingkungan yang berbeda.</p>
-                        <a href="#" class="card-link">Pelajari Lebih Lanjut →</a>
-                    </div>
-
-                    <div class="knowledge-card">
-                        <div class="card-icon">📐</div>
-                        <h3>Perhitungan Teknis</h3>
-                        <p>Rumus dan metode perhitungan untuk menentukan kemampuan beban, stress, dan faktor keamanan dalam aplikasi konstruksi.</p>
-                        <a href="#" class="card-link">Pelajari Lebih Lanjut →</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Jenis Baja Section -->
-        <section class="jenis-baja" id="jenis-baja" style="display: none;">
-            <div class="section-container">
-                <h2>⚙️ Jenis-Jenis Baja</h2>
-
-                <div class="baja-types">
-                    <div class="baja-card">
-                        <div class="baja-header">🔴 Baja Karbon (Carbon Steel)</div>
-                        <div class="baja-content">
-                            <p><strong>Penggunaan:</strong> Konstruksi, pipa, komponen mesin</p>
-                            <p><strong>Karakteristik:</strong> Ekonomis, mudah dibentuk, kuat</p>
-                            <p><strong>Contoh Grade:</strong> ASTM A36, JIS SS400</p>
-                            <div class="baja-specs">
-                                <span class="spec">Kekuatan Tarik: 400-700 MPa</span>
-                                <span class="spec">Harga: Ekonomis</span>
-                                <span class="spec">Ketahanan: Sedang</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="baja-card">
-                        <div class="baja-header">🟠 Baja Paduan (Alloy Steel)</div>
-                        <div class="baja-content">
-                            <p><strong>Penggunaan:</strong> Aplikasi khusus dengan persyaratan tinggi</p>
-                            <p><strong>Karakteristik:</strong> Kekuatan lebih tinggi, tahan panas</p>
-                            <p><strong>Contoh Grade:</strong> ASTM A514, API 5L</p>
-                            <div class="baja-specs">
-                                <span class="spec">Kekuatan Tarik: 800-1200 MPa</span>
-                                <span class="spec">Harga: Premium</span>
-                                <span class="spec">Ketahanan: Tinggi</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="baja-card">
-                        <div class="baja-header">✨ Baja Tahan Karat (Stainless Steel)</div>
-                        <div class="baja-content">
-                            <p><strong>Penggunaan:</strong> Industri makanan, kimia, kapal</p>
-                            <p><strong>Karakteristik:</strong> Tahan korosi, estetis, higienis</p>
-                            <p><strong>Contoh Grade:</strong> AISI 304, AISI 316</p>
-                            <div class="baja-specs">
-                                <span class="spec">Kekuatan Tarik: 500-900 MPa</span>
-                                <span class="spec">Harga: Mahal</span>
-                                <span class="spec">Ketahanan: Sangat Tinggi</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="baja-card">
-                        <div class="baja-header">🏗️ Baja Struktural (Structural Steel)</div>
-                        <div class="baja-content">
-                            <p><strong>Penggunaan:</strong> Rangka bangunan, jembatan, tower</p>
-                            <p><strong>Karakteristik:</strong> Kuat, liat, mudah dilas</p>
-                            <p><strong>Contoh Grade:</strong> EN S235, EN S355</p>
-                            <div class="baja-specs">
-                                <span class="spec">Kekuatan Tarik: 400-550 MPa</span>
-                                <span class="spec">Harga: Sedang</span>
-                                <span class="spec">Ketahanan: Baik</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Standar Section -->
-        <section class="standar" id="standar" style="display: none;">
-            <div class="section-container">
-                <h2>✅ Standar Baja Internasional</h2>
-
-                <div class="standar-grid">
-                    <div class="standar-item">
-                        <h3>🇺🇸 ASTM (Amerika)</h3>
-                        <div class="standar-list">
-                            <p><strong>ASTM A36</strong> - Baja karbon konstruksi</p>
-                            <p><strong>ASTM A514</strong> - Baja paduan berkekuatan tinggi</p>
-                            <p><strong>ASTM A992</strong> - Baja struktural</p>
-                        </div>
-                    </div>
-
-                    <div class="standar-item">
-                        <h3>🇯🇵 JIS (Jepang)</h3>
-                        <div class="standar-list">
-                            <p><strong>JIS G3101 SS400</strong> - Baja karbon konstruksi</p>
-                            <p><strong>JIS G3101 SS490</strong> - Baja konstruksi berkekuatan tinggi</p>
-                            <p><strong>JIS G4101 SNCM</strong> - Baja paduan</p>
-                        </div>
-                    </div>
-
-                    <div class="standar-item">
-                        <h3>🇪🇺 EN (Eropa)</h3>
-                        <div class="standar-list">
-                            <p><strong>EN S235</strong> - Baja struktural umum</p>
-                            <p><strong>EN S275</strong> - Baja struktural sedang</p>
-                            <p><strong>EN S355</strong> - Baja struktural berkekuatan tinggi</p>
-                        </div>
-                    </div>
-
-                    <div class="standar-item">
-                        <h3>🥄 AISI (Stainless)</h3>
-                        <div class="standar-list">
-                            <p><strong>AISI 304</strong> - Stainless steel austenite</p>
-                            <p><strong>AISI 316</strong> - Stainless steel tahan korosi tinggi</p>
-                            <p><strong>AISI 430</strong> - Stainless steel ferrite</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Tools Section -->
-        <section class="tools" id="tools" style="display: none;">
-            <div class="section-container">
-                <h2><i class="fas fa-wrench"></i> Tools Kalkulator Teknis</h2>
-
-                <div class="tools-grid">
-                    <div class="tool-card">
-                        <h3><i class="fas fa-ruler"></i> Kalkulator Beban</h3>
-                        <p>Hitung kapasitas beban maksimal material baja</p>
-                        <div class="tool-input">
-                            <input type="number" placeholder="Luas penampang (mm²)">
-                            <input type="number" placeholder="Tegangan izin (MPa)">
-                            <button><i class="fas fa-calculator"></i> Hitung</button>
-                        </div>
-                    </div>
-
-                    <div class="tool-card">
-                        <h3><i class="fas fa-balance-scale"></i> Kalkulator Berat</h3>
-                        <p>Hitung berat material baja berdasarkan dimensi</p>
-                        <div class="tool-input">
-                            <input type="number" placeholder="Panjang (m)">
-                            <input type="number" placeholder="Lebar (mm)">
-                            <input type="number" placeholder="Tebal (mm)">
-                            <button><i class="fas fa-calculator"></i> Hitung</button>
-                        </div>
-                    </div>
-
-                    <div class="tool-card">
-                        <h3><i class="fas fa-fire"></i> Konversi Satuan</h3>
-                        <p>Konversi satuan teknis baja dengan mudah</p>
-                        <div class="tool-input">
-                            <input type="number" placeholder="Nilai">
-                            <select>
-                                <option>MPa ke PSI</option>
-                                <option>mm² ke inch²</option>
-                                <option>kg/m ke lb/ft</option>
-                            </select>
-                            <button><i class="fas fa-bolt"></i> Konversi</button>
-                        </div>
-                    </div>
-
-                    <div class="tool-card">
-                        <h3><i class="fas fa-chart-line"></i> Stress & Strain</h3>
-                        <p>Analisis stress dan strain material</p>
-                        <div class="tool-input">
-                            <input type="number" placeholder="Gaya (N)">
-                            <input type="number" placeholder="Luas (mm²)">
-                            <input type="number" placeholder="Panjang awal (mm)">
-                            <button><i class="fas fa-chart-area"></i> Analisis</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Profil Section -->
-        <section class="profil" id="profil" style="display: none;">
-            <div class="section-container">
-                <h2>👤 Profil Saya</h2>
-
-                <div class="profil-container">
-                    <div class="profil-card">
-                        <div class="profil-header">
-                            <div class="profil-avatar">👤</div>
-                            <h3>User Profile</h3>
-                            <p>Member sejak 2024</p>
-                        </div>
-
-                        <div class="profil-info">
-                            <div class="info-item">
-                                <label>📧 Email</label>
-                                <p>user@example.com</p>
-                            </div>
-                            <div class="info-item">
-                                <label>👤 Username</label>
-                                <p>User Teknikal Baja</p>
-                            </div>
-                            <div class="info-item">
-                                <label><i class="fas fa-book-stack"></i> Tingkat Pembelajaran</label>
-                                <p>Intermediate</p>
-                            </div>
-                            <div class="info-item">
-                                <label><i class="fas fa-star"></i> Poin Pembelajaran</label>
-                                <p>2,450 poin</p>
-                            </div>
-                        </div>
-
-                        <button class="edit-profil-btn"><i class="fas fa-pen"></i> Edit Profil</button>
-                    </div>
-
-                    <div class="achievement-card">
-                        <h3><i class="fas fa-trophy"></i> Pencapaian</h3>
-                        <div class="achievement-list">
-                            <div class="achievement-item">
-                                <span class="achievement-icon"><i class="fas fa-graduation-cap"></i></span>
-                                <span>Kursus Dasar Selesai</span>
-                            </div>
-                            <div class="achievement-item">
-                                <span class="achievement-icon"><i class="fas fa-star"></i></span>
-                                <span>10+ Artikel Dibaca</span>
-                            </div>
-                            <div class="achievement-item">
-                                <span class="achievement-icon"><i class="fas fa-flask-vial"></i></span>
-                                <span>Ahli Standar ASTM</span>
-                            </div>
-                            <div class="achievement-item">
-                                <span class="achievement-icon"><i class="fas fa-circle-check"></i></span>
-                                <span>Quiz 100% Benar</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer>
-            <p>&copy; 2025 Teknikal Baja. Platform Edukasi Teknis Material Baja. Semua hak dilindungi.</p>
-        </footer>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/4.2.2/anime.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/4.2.2/anime.min.js"></script>
     <script src="./api-helper.js"></script>
     <script src="./anime.js"></script>
+    <script>
+        // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', async function() {
+            const isAuthenticated = teknikal_baja_api.isAuthenticated();
+            
+            if (isAuthenticated) {
+                // User is logged in, show dashboard
+                showDashboard();
+            } else {
+                // User is not logged in, show welcome screen
+                showWelcomeScreen();
+            }
+        });
+
+        function showDashboard() {
+            document.getElementById('welcomeScreen').style.display = 'none';
+            document.getElementById('sidebar').style.display = 'block';
+            document.getElementById('mainContent').style.display = 'block';
+            document.getElementById('loginNavBtn').style.display = 'none';
+            document.getElementById('logoutNavBtn').style.display = 'block';
+            
+            // Initialize dashboard
+            initDashboard();
+        }
+
+        function showWelcomeScreen() {
+            document.getElementById('welcomeScreen').style.display = 'block';
+            document.getElementById('sidebar').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('loginNavBtn').style.display = 'block';
+            document.getElementById('logoutNavBtn').style.display = 'none';
+        }
+
+        function initDashboard() {
+            // Initialize dashboard animations and functionality
+            anime.timeline()
+                .add({
+                    targets: '.welcome-card',
+                    opacity: [0, 1],
+                    translateY: [20, 0],
+                    duration: 500,
+                    easing: 'easeOutExpo'
+                })
+                .add({
+                    targets: '.stat-card',
+                    opacity: [0, 1],
+                    translateY: [20, 0],
+                    duration: 500,
+                    easing: 'easeOutExpo',
+                    stagger: 100
+                }, '-=300')
+                .add({
+                    targets: '.feature-item',
+                    opacity: [0, 1],
+                    translateY: [20, 0],
+                    duration: 500,
+                    easing: 'easeOutExpo',
+                    stagger: 100
+                }, '-=300');
+        }
+    </script>
 </body>
 </html>

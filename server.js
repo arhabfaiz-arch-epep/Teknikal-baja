@@ -19,8 +19,8 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Serve static files from root
-app.use(express.static(path.join(__dirname), {
+// Serve static files from public directory
+app.use(express.static(path.join(__dirname, 'public'), {
     setHeaders: (res, path) => {
         if (path.endsWith('.html')) {
             res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
@@ -47,7 +47,7 @@ app.get('/api/health', (req, res) => {
 // Serve index.html for all non-API routes
 app.get('*', (req, res) => {
     if (!req.path.startsWith('/api/')) {
-        res.sendFile(path.join(__dirname, 'index.html'));
+        res.sendFile(path.join(__dirname, 'public', 'index.html'));
     }
 });
 
